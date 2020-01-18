@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@color/quantum_white_100"
+                android:elevation="7dp"
+                >
+                <fragment android:id="@+id/autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewWeather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="15dp"
+                android:visibility="@{weatherViewModel.weatherResponse == null ? View.GONE : View.VISIBLE}"
+                android:elevation="7dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/card_custom_weather"
+                    android:padding="10dp"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/imageWeatherEnd"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            tools:src="@drawable/ic_wi_snow"
+                            android:src='@{weatherViewModel.weatherResponse.currently.summary.contains("Cloud")?@drawable/ic_wi_cloudy:weatherViewModel.weatherResponse.currently.summary.contains("Sun")||weatherViewModel.weatherResponse.currently.summary.contains("Clear")?@drawable/ic_wi_day_sunny:weatherViewModel.weatherResponse.currently.summary.contains("Rain")?@drawable/ic_wi_rain:weatherViewModel.weatherResponse.currently.summary.contains("Wind")?@drawable/ic_wi_day_windy:weatherViewModel.weatherResponse.currently.summary.contains("Fog")?@drawable/ic_wi_fog:weatherViewModel.weatherResponse.currently.summary.contains("Lightn")?@drawable/ic_wi_lightning:weatherViewModel.weatherResponse.currently.summary.contains("Sleet")?@drawable/ic_wi_sleet:weatherViewModel.weatherResponse.currently.summary.contains("Snow")?@drawable/ic_wi_snow:@drawable/ic_wi_cloudy}'
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:tint="@color/colorPrimary"
+                            />
+                        <ImageView
+                            android:id="@+id/imageWeatherStart"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src='@{weatherViewModel.weatherResponse.currently.summary.contains("Cloud")?@drawable/ic_wi_cloudy:weatherViewModel.weatherResponse.currently.summary.contains("Sun")||weatherViewModel.weatherResponse.currently.summary.contains("Clear")?@drawable/ic_wi_day_sunny:weatherViewModel.weatherResponse.currently.summary.contains("Rain")?@drawable/ic_wi_rain:weatherViewModel.weatherResponse.currently.summary.contains("Wind")?@drawable/ic_wi_day_windy:weatherViewModel.weatherResponse.currently.summary.contains("Fog")?@drawable/ic_wi_fog:weatherViewModel.weatherResponse.currently.summary.contains("Lightn")?@drawable/ic_wi_lightning:weatherViewModel.weatherResponse.currently.summary.contains("Sleet")?@drawable/ic_wi_sleet:weatherViewModel.weatherResponse.currently.summary.contains("Snow")?@drawable/ic_wi_snow:@drawable/ic_wi_cloudy}'
+                            tools:src="@drawable/ic_wi_day_sunny"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:tint="@color/colorPrimary"
+                            />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvTimezone"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageWeatherStart"
+                            app:layout_constraintEnd_toStartOf="@+id/imageWeatherEnd"
+                            android:text="@{weatherViewModel.weatherResponse.timezone}"
+
+                            tools:text="Los Angeles"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvWeatherSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:text="@{weatherViewModel.weatherResponse.currently.summary}"
+
+                        tools:text="Mostly cloudy" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/colorPrimary"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        >
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            app:layout_constraintEnd_toEndOf="parent">
+                            <TextView
+                                android:id="@+id/lblLat"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_lat"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valLat"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                android:text="@{weatherViewModel.weatherResponse.latitude.toString()}"
+                                tools:text="11254"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblLong"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_long"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblLat"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valLong"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                android:text="@{weatherViewModel.weatherResponse.longitude.toString()}"
+                                tools:text="11254"
+                                app:layout_constraintTop_toBottomOf="@+id/lblLat"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblTime"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_time"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblLong"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valTime"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.time}"
+                                app:layout_constraintTop_toBottomOf="@+id/lblLong"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblTemperature"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_temperature"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblTime"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valTemperature"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.temperature.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblTime"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblNearStormD"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_nearestStormDistance"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblTemperature"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valNearStormD"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.nearestStormDistance.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblTemperature"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblNearStormB"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_nearestStormBearing"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblNearStormD"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valNearStormB"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.nearestStormBearing.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblNearStormD"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblPrecipInt"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_precipIntensity"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblNearStormB"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valPrecipInt"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.precipIntensity.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblNearStormB"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblPrecipPro"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_precipProbability"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblPrecipInt"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valPrecipPro"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.precipProbability.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblPrecipInt"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblAppTemperature"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_apparentTemperature"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblPrecipPro"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valAppTemperature"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.apparentTemperature.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblPrecipPro"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblDewPoint"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_apparentTemperature"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblAppTemperature"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valDewPoint"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.dewPoint.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblAppTemperature"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblHumidity"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_humidity"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblDewPoint"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valHumidity"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.humidity.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblDewPoint"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblPressure"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_pressure"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblHumidity"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valPressure"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.pressure.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblHumidity"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblWindSpeed"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_windSpeed"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblPressure"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valWindSpeed"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.windSpeed.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblPressure"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblWindGust"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_windGust"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblWindSpeed"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valWindGust"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.windGust.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblWindSpeed"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblWindBear"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_windBearing"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblWindGust"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valWindBear"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.windBearing.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblWindGust"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/cloudCover"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_cloudCover"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblWindBear"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valCloudCover"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.cloudCover.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblWindBear"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblUvIndex"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_uvIndex"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/cloudCover"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valUvIndex"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.uvIndex.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/cloudCover"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblVisibility"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_visibility"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblUvIndex"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valVisibility"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.visibility.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblUvIndex"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <TextView
+                                android:id="@+id/lblOzone"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lbl_ozone"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@+id/lblVisibility"
+                                app:layout_constraintStart_toStartOf="parent"/>
+                            <TextView
+                                android:id="@+id/valOzone"
+                                android:layout_width="0dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_height="wrap_content"
+                                tools:text="11254"
+                                android:text="@{weatherViewModel.weatherResponse.currently.ozone.toString()}"
+
+                                app:layout_constraintTop_toBottomOf="@+id/lblVisibility"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
+    <data>
+        <import type="android.view.View" />
+        <variable name="weatherViewModel" type="com.stateside.myweatherapp.viewmodel.WeatherViewModel"/>
+    </data>
+</layout>

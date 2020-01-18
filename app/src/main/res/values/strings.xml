@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">MyWeatherApp</string>
+    <string name="lbl_lat">Latitude:</string>
+    <string name="lbl_long">Longitude:</string>
+    <string name="lbl_time">Time:</string>
+    <string name="lbl_summary">Summary:</string>
+    <string name="lbl_nearestStormDistance">Nearest storm d:</string>
+    <string name="lbl_nearestStormBearing">Nearest storm b:</string>
+    <string name="lbl_precipIntensity">Precip intensity:</string>
+    <string name="lbl_precipProbability">Precip probability:</string>
+    <string name="lbl_temperature">Temperature:</string>
+    <string name="lbl_apparentTemperature">Apparent temperature:</string>
+    <string name="lbl_dewPoint">Dew point:</string>
+    <string name="lbl_humidity">Humidity:</string>
+    <string name="lbl_pressure">Pressure:</string>
+    <string name="lbl_windSpeed">Wind speed:</string>
+    <string name="lbl_windGust">Wind gust:</string>
+    <string name="lbl_windBearing">Wind bearing:</string>
+    <string name="lbl_cloudCover">Cloud cover:</string>
+    <string name="lbl_uvIndex">UV index:</string>
+    <string name="lbl_visibility">Visibility:</string>
+    <string name="lbl_ozone">Ozone:</string>
+</resources>
